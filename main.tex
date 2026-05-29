@@ -1,0 +1,418 @@
+\documentclass[11pt,a4paper]{article}
+
+% -------------------- Packages --------------------
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs,tabularx,array}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\renewcommand{\arraystretch}{1.2}
+\graphicspath{{figures/}}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\newcommand{\TopicFigure}[2]{%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{#1}
+    \caption{#2}
+\end{figure}
+}
+
+% -------------------- Title --------------------
+\title{\textbf{Computational Atlas of Pure Mathematics}\\[0.4em]
+\large A field-organised report on 14 visualisations}
+\author{Lee Cheuk Man Gerard}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This self-directed report presents fourteen Python-generated visualisations that turn classical objects from pure mathematics into pictures. The material ranges from complex analysis and fractals to topology, differential geometry, algebra, number theory, hyperbolic geometry, and probability. The original image-led notes have been reorganised into a field-based narrative so that related ideas sit together. Tables~\ref{tab:classification} and~\ref{tab:fields} summarise the structure before the detailed gallery. The figures were generated with the scientific Python stack, using numerical grids, parametrisations, iterative maps, numerical integration, graph constructions, and simulation.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ==================================================
+\section{Introduction}
+
+This report presents fourteen Python-generated visualisations that turn classical objects from pure mathematics into pictures. The material ranges from complex analysis and fractals to topology, differential geometry, algebra, number theory, hyperbolic geometry, and probability. The original image-led notes have been reorganised into a field-based narrative so that related ideas sit together.
+
+The examples were produced using the scientific Python stack, including tools such as NumPy, Matplotlib, SciPy, NetworkX, and mpmath, together with numerical grids, parametrisations, iterative maps, numerical integration, graph constructions, and simulation.
+
+Tables~\ref{tab:classification} and~\ref{tab:fields} give a compact overview before the detailed gallery below.
+
+% ==================================================
+\clearpage
+\phantomsection
+\section{Classification table of all 14 visualisations}
+
+The table below gives a one-line classification of each visualisation by its main mathematical home and the key objects it displays.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}c P{2.9cm} P{2.8cm} P{3.0cm} Y@{}}
+\toprule
+\# & Visualisation & Primary field & Subfield(s) & Key mathematical objects \\
+\midrule
+1 & Domain coloring & Complex analysis & Meromorphic functions & \(f(z)=\frac{z^2-1}{z^2+1}\), zeros, poles, argument principle \\
+2 & Mandelbrot set & Complex dynamics & Iteration of holomorphic maps & \(z_{n+1}=z_n^2+c\), escape time, filled Julia sets \\
+3 & Lorenz attractor & Dynamical systems & Nonlinear ODEs, chaos & Strange attractor, sensitive dependence, classical parameters \((10,28,8/3)\) \\
+4 & Trefoil knot & Topology & Knot theory, low-dimensional topology & Embedding \(S^1\subset\mathbb{R}^3\), isotopy, knot crossings \\
+5 & Enneper minimal surface & Differential geometry & Minimal surfaces & Mean curvature zero, parametrisation, geometric analysis \\
+6 & Cayley graph of \(S_3\) & Group theory & Finite groups, combinatorics & Generators, permutations, graph symmetry \\
+7 & Elliptic curve & Algebraic geometry / number theory & Cubic curves, arithmetic geometry & Rational points, chord-tangent law, group structure \\
+8 & Farey sequence and Ford circles & Number theory & Diophantine approximation & Rational fractions, circle tangency, Farey neighbours \\
+9 & Riemann zeta on the critical line & Analytic number theory & Zeta function, prime distribution & Critical strip, nontrivial zeros, analytic continuation \\
+10 & Modular group action & Hyperbolic geometry & Fuchsian groups, modular forms & \(\mathrm{PSL}(2,\mathbb{Z})\), Poincar\'e disk, fundamental domain \\
+11 & Newton fractal & Complex dynamics / numerical analysis & Root-finding, fractals & Newton map, basins of attraction, Julia boundary \\
+12 & Homotopy: circle to figure-eight & Topology & Homotopy theory & Continuous deformation, loops, self-intersections \\
+13 & Central limit theorem & Probability theory & Limit theorems, statistics & Standardised sums, Gaussian convergence \\
+14 & Hyperboloid model of \(\mathbb{H}^2\) & Differential geometry / hyperbolic geometry & Lorentzian geometry & Geodesics, Minkowski form, constant negative curvature \\
+\bottomrule
+\end{tabularx}
+\caption{Classification table of all fourteen visualisations. Some topics naturally span more than one field.}
+\label{tab:classification}
+\end{table}
+
+% ==================================================
+% ==================================================
+\clearpage
+\phantomsection
+\section{Topics aggregated by field}
+
+The next table reorganises the same material by field rather than by output order. This is the cleaner thematic map used in the detailed gallery that follows.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}P{5.0cm} Y@{}}
+\toprule
+Field & Visualisations \\
+\midrule
+Complex analysis and complex dynamics & \#1 (domain coloring), \#2 (Mandelbrot set), \#11 (Newton fractal) \\
+Dynamical systems & \#3 (Lorenz attractor) \\
+Topology and knot theory & \#4 (trefoil knot), \#12 (homotopy: circle to figure-eight) \\
+Differential geometry & \#5 (Enneper minimal surface), \#14 (hyperboloid model of \(\mathbb{H}^2\)) \\
+Algebra, group theory, and algebraic geometry & \#6 (Cayley graph of \(S_3\)), \#7 (elliptic curve) \\
+Number theory and hyperbolic geometry & \#8 (Farey sequence and Ford circles), \#9 (Riemann zeta on the critical line), \#10 (modular group action) \\
+Probability theory & \#13 (central limit theorem) \\
+\bottomrule
+\end{tabularx}
+\caption{Topics aggregated by field.}
+\label{tab:fields}
+\end{table}
+
+\clearpage
+
+% ==================================================
+\section{The outputs: field-organised gallery}
+
+The order below is thematic rather than linear; the topic numbers match the original document.
+
+% --------------------------------------------------
+\subsection{Complex Analysis and Complex Dynamics}
+
+These examples show complementary views of holomorphic functions and iterative maps on the complex plane.
+
+\subsubsection*{1. Domain coloring}
+
+Domain coloring is a standard way to visualise a complex-valued function \(f:\mathbb{C}\to\widehat{\mathbb{C}}\): hue records the argument \(\arg f(z)\), while brightness records the modulus \(|f(z)|\). For
+\[
+f(z)=\frac{z^2-1}{z^2+1},
+\]
+the zeros occur at \(z=\pm1\) and the poles at \(z=\pm i\), so the phase winds sharply around four distinguished points. The picture turns local complex-analytic data into an immediate global pattern.
+
+\TopicFigure{01_domain_coloring.png}{Domain coloring of \(f(z)=\frac{z^2-1}{z^2+1}\).}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{2. Mandelbrot set}
+
+The Mandelbrot set is the parameter locus of the quadratic iteration
+\[
+z_{n+1}=z_n^2+c,\qquad z_0=0.
+\]
+A parameter \(c\) belongs to the set when its orbit remains bounded; the usual escape-radius test \((|z_n|>2)\) determines divergence. The set is the connectedness locus of the quadratic family, and its boundary is a prototypical fractal of infinite detail and self-similarity.
+
+\TopicFigure{02_mandelbrot_set.png}{Mandelbrot set of the quadratic family \(z_{n+1}=z_n^2+c\).}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{11. Newton fractal}
+
+Newton's method becomes a dynamical system in the complex plane through the map
+\[
+N(z)=z-\frac{z^5-1}{5z^4}.
+\]
+Each initial point is iterated until it converges to one of the five fifth roots of unity; the colour records which root is reached. The fractal boundary between basins of attraction is the Julia set of the Newton map.
+
+\TopicFigure{11_newton_fractal.png}{Newton fractal for \(z^5-1\).}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+% --------------------------------------------------
+\subsection{Dynamical Systems}
+
+This section focuses on the long-term behaviour of a nonlinear ODE.
+
+\subsubsection*{3. Lorenz attractor}
+
+The Lorenz equations are
+\[
+\dot{x}=\sigma(y-x),\qquad
+\dot{y}=x(\rho-z)-y,\qquad
+\dot{z}=xy-\beta z.
+\]
+For the classical parameter values \((\sigma,\rho,\beta)=(10,28,8/3)\), a numerical trajectory is attracted to the familiar butterfly-shaped strange attractor. This is one of the canonical pictures of deterministic chaos: the system is fully deterministic, yet its long-term behaviour is highly sensitive to initial conditions.
+
+\TopicFigure{03_lorenz_attractor.png}{A numerical trajectory on the Lorenz attractor.}
+
+% --------------------------------------------------
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsection{Topology and Knot Theory}
+
+These images describe knots and continuous deformations of loops.
+
+\subsubsection*{4. Trefoil knot}
+
+The curve
+\[
+\gamma(t)=\big(\sin t+2\sin 2t,\ \cos t-2\cos 2t,\ -\sin 3t\big),\qquad 0\le t\le 2\pi,
+\]
+is a closed parametrised knot in \(\mathbb{R}^3\). Topologically it is the trefoil knot, the simplest nontrivial knot, distinguished from the unknot by its three crossings and by knot invariants such as the Jones polynomial.
+
+\TopicFigure{04_trefoil_knot.png}{Trefoil knot parametrised in \(\mathbb{R}^3\).}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{12. Homotopy: circle to figure-eight}
+
+A homotopy is a continuous family of maps
+\[
+H:S^1\times[0,1]\to\mathbb{R}^2,
+\]
+with \(H(\cdot,0)\) a circle and \(H(\cdot,1)\) a figure-eight. The intermediate frames show a deformation of one looped curve into another; self-intersections are allowed because this is a homotopy of maps rather than an isotopy of embedded curves.
+
+\TopicFigure{12_homotopy_circle_figure_eight.png}{Homotopy from a circle to a figure-eight.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+% --------------------------------------------------
+\subsection{Differential Geometry}
+
+These plots make curvature visible through parametrised surfaces and models.
+
+\subsubsection*{5. Enneper minimal surface}
+
+Enneper's surface is a classical minimal surface given by the parametrisation
+\[
+X(u,v)=\left(u-\frac{u^3}{3}+uv^2,\ v-\frac{v^3}{3}+vu^2,\ u^2-v^2\right).
+\]
+It is a critical point of the area functional, and its mean curvature vanishes identically. The resulting surface illustrates how a purely analytic formula can generate highly nontrivial geometry.
+
+\TopicFigure{05_enneper_surface.png}{Enneper minimal surface.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{14. Hyperboloid model of \(\mathbb{H}^2\)}
+
+The hyperboloid model realises the hyperbolic plane as
+\[
+\mathbb{H}^2=\{(x,y,z)\in\mathbb{R}^{2,1}:x^2+y^2-z^2=-1,\ z>0\},
+\]
+with Minkowski form
+\[
+\langle u,v\rangle=u_1v_1+u_2v_2-u_3v_3.
+\]
+Geodesics are intersections with planes through the origin, so the model turns hyperbolic lines into visible curves in \(\mathbb{R}^3\). The geometry has constant negative curvature.
+
+\TopicFigure{14_hyperboloid_model.png}{Hyperboloid model of \(\mathbb{H}^2\) and its geodesics.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+% --------------------------------------------------
+\subsection{Algebra, Group Theory, and Algebraic Geometry}
+
+These examples translate algebraic rules into geometry.
+
+\subsubsection*{6. Cayley graph of \(S_3\)}
+
+The symmetric group \(S_3=\langle(12),(23)\rangle\) has six elements, and the Cayley graph records right multiplication by the chosen generators. Each vertex is a permutation, and each coloured edge corresponds to multiplying by one generator. The graph makes the finite group structure visible as a cycle of symmetries.
+
+\TopicFigure{06_cayley_graph_s3.png}{Cayley graph of \(S_3\) generated by \((12)\) and \((23)\).}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{7. Elliptic curve and group law}
+
+The cubic curve
+\[
+E:\ y^2=x^3-x+1
+\]
+is nonsingular, so the chord-tangent construction defines a group law on its points. If a line meets the curve at \(P\), \(Q\), and \(R\), then \(P+Q\) is obtained by reflecting \(R\) across the \(x\)-axis. The point at infinity \(\mathcal O\) serves as the identity, and the real locus becomes an abelian group.
+
+\TopicFigure{07_elliptic_curve.png}{Real locus of \(y^2=x^3-x+1\) with the chord-tangent group law.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+% --------------------------------------------------
+\subsection{Number Theory and Hyperbolic Geometry}
+
+These pictures link rational approximation, modular symmetry, and zeta functions.
+
+\subsubsection*{8. Farey sequence and Ford circles}
+
+Farey sequences list reduced fractions in increasing order by denominator, and Ford circles place a circle of radius
+\[
+r_{p/q}=\frac{1}{2q^2}
+\]
+above each fraction \(p/q\). Two Ford circles are tangent exactly when the corresponding fractions are Farey neighbours, equivalently when \(|ps-qr|=1\). This gives a geometric model of rational approximation.
+
+\TopicFigure{08_ford_circles.png}{Ford circles associated with a Farey sequence.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{9. Riemann zeta on the critical line}
+
+The Riemann zeta function \(\zeta(s)\) is initially defined by a Dirichlet series for \(\Re(s)>1\) and extends meromorphically to the complex plane. When one plots \(t\mapsto \zeta\!\left(\frac12+it\right)\), the curve in \(\mathbb{C}\) winds close to the origin near nontrivial zeros on the critical line; the first occurs at \(t\approx 14.1347\). This visualises a central object in analytic number theory and its connection to prime distribution.
+
+\TopicFigure{09_zeta_critical_line.png}{The trajectory \(t\mapsto \zeta\!\left(\frac12+it\right)\) in the complex plane.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+\subsubsection*{10. Modular group action}
+
+The modular group \(\mathrm{PSL}(2,\mathbb{Z})\) acts on the upper half-plane by Möbius transformations
+\[
+\tau\longmapsto \frac{a\tau+b}{c\tau+d},\qquad a,b,c,d\in\mathbb{Z},\ ad-bc=1.
+\]
+The standard fundamental domain
+\[
+\mathcal F=\left\{\tau\in\mathbb{H}:\ |\tau|\ge 1,\ -\frac12\le \Re(\tau)\le \frac12\right\}
+\]
+tiles \(\mathbb H\) under this action, and the Cayley transform sends the picture to the Poincar\'e disk. The result is a geometric representation of modular symmetry.
+
+\TopicFigure{10_modular_group_disk.png}{Modular group tessellation in the Poincar\'e disk.}
+
+% ==================================================
+\clearpage
+\phantomsection
+
+% --------------------------------------------------
+\subsection{Probability Theory}
+
+The final example illustrates the universal Gaussian limit.
+
+\subsubsection*{13. Central limit theorem}
+
+If \(U_1,\dots,U_n\) are i.i.d. \(\mathrm{Unif}(0,1)\), then the standardised sum
+\[
+Z_n=\frac{\sum_{i=1}^n U_i-n/2}{\sqrt{n/12}}
+\]
+converges in distribution to \(\mathcal N(0,1)\). The histograms make the universal Gaussian limit visible as \(n\) grows, showing how an apparently uniform source of randomness stabilises into the normal law after centring and scaling.
+
+\TopicFigure{13_clt.png}{Central limit theorem: standardised sums of uniform random variables.}
+
+% ==================================================
+\clearpage
+\section{Connections \& Overlaps}
+
+Some visualisations sit at rich intersections:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{\#1, \#2, and \#11} are all rooted in complex analysis and dynamics, but they display different objects: domain coloring shows the values of a complex function, the Mandelbrot set lives in parameter space, and the Newton fractal shows basins of attraction for an iterative solver.
+
+    \item \textbf{\#6 and \#7} show two ways algebra becomes geometry: a Cayley graph records multiplication by generators in a finite group, while the elliptic curve turns the chord-tangent construction into a group law on a cubic.
+
+    \item \textbf{\#8, \#9, and \#10} form an arithmetic-geometry cluster. Farey and Ford geometry organise rational approximation, the zeta plot encodes critical-line behaviour, and the modular action produces a hyperbolic tessellation.
+
+    \item \textbf{\#4 and \#12} both concern loops, but in different senses. The trefoil knot studies embedding class in \(\mathbb{R}^3\), whereas the homotopy frames show deformation of a closed curve and allow self-intersections along the way.
+
+    \item \textbf{\#5 and \#14} are geometric extremals: Enneper's surface has mean curvature zero, while the hyperboloid model realises constant negative curvature.
+
+    \item \textbf{\#3 and \#13} contrast deterministic chaos with probabilistic convergence. The Lorenz attractor is chaotic but deterministic, whereas the central limit theorem explains a universal tendency toward the Gaussian law.
+\end{itemize}
+
+\clearpage
+\section{Conclusion}
+
+Taken together, the figures form a compact atlas of pure mathematics in computational form. Python provides the medium, but the mathematics determines the structure: phase portraits, fractals, trajectories, surfaces, group actions, limit laws, and hyperbolic models each reveal a different kind of order. The report can therefore be read both as a gallery and as a map of interrelated ideas.
+
+% ==================================================
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+
+\bibitem{needham}
+T. Needham, \emph{Visual Complex Analysis}. Oxford University Press, 1997.
+
+\bibitem{milnor}
+J. Milnor, \emph{Dynamics in One Complex Variable}. Princeton University Press, 3rd ed., 2006.
+
+\bibitem{mandelbrot}
+B. B. Mandelbrot, \emph{The Fractal Geometry of Nature}. W. H. Freeman, 1982.
+
+\bibitem{strogatz}
+S. H. Strogatz, \emph{Nonlinear Dynamics and Chaos}. Westview Press, 2nd ed., 2015.
+
+\bibitem{silverman}
+J. H. Silverman and J. Tate, \emph{Rational Points on Elliptic Curves}. Springer, 1992.
+
+\bibitem{katok}
+S. Katok, \emph{Fuchsian Groups}. University of Chicago Press, 1992.
+
+\end{thebibliography}
+
+\end{document}
